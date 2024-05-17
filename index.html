@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Журбенко Николь ПР4</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    #slider {
+      width: 300px;
+      height: 10px;
+      background-color: #fd828c;
+      border-radius: 5px;
+      position: relative;
+      margin: 20px auto;
+    }
+
+    #slider-thumb {
+      width: 20px;
+      height: 20px;
+      background-color: #bb2b3f;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+
+    #value {
+      text-align: center;
+      margin-top: 10px;
+      font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+    }
+
+    #marks {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 5px;
+      font-size: 15px;
+      font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+    }
+
+    #marks span {
+      text-align: center;
+    }
+
+    #slider-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background-color: #b85c5c; 
+      border-radius: 5px;
+      width: 0; 
+    }
+  </style>
+</head>
+
+<body>
+  <div id="value">0</div>
+  <div id="slider">
+    <div id="slider-fill"></div>
+    <div id="slider-thumb"></div>
+    <div id="marks">
+      <span>0</span>
+      <span>20</span>
+      <span>40</span>
+      <span>60</span>
+      <span>80</span>
+      <span>100</span>
+    </div>
+  </div>
+
+  <script>
+    const slider = document.getElementById('slider');
+    const sliderThumb = document.getElementById('slider-thumb');
+    const value = document.getElementById('value');
+    const marks = document.getElementById('marks');
+    const sliderFill = document.getElementById('slider-fill');
+
+    let sliderWidth = slider.offsetWidth;
+    let sliderThumbWidth = sliderThumb.offsetWidth;
+    let currentPosition = 0;
+
+    function updatePosition(event) {
+      const mouseX = event.clientX - slider.offsetLeft;
+      const newPosition = Math.max(0, Math.min(mouseX - sliderThumbWidth / 2, sliderWidth - sliderThumbWidth));
+      currentPosition = newPosition;
+      sliderThumb.style.left = newPosition + 'px';
+      value.textContent = Math.round((currentPosition / (sliderWidth - sliderThumbWidth)) * 100);
+      sliderFill.style.width = newPosition + 'px'; 
+    }
+
+    slider.addEventListener('mousedown', function(event) {
+      updatePosition(event);
+      document.addEventListener('mousemove', updatePosition);
+      document.addEventListener('mouseup', function() {
+        document.removeEventListener('mousemove', updatePosition);
+      });
+    });
+  </script>
+
+</body>
+</html>
